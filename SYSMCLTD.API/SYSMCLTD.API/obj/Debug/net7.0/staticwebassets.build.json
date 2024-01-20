@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "V8bzBfavgTQB208dLHUkW4zAnPgqnAUDqhoLBmxWwxw=",
+  "Source": "SYSMCLTD.API",
+  "BasePath": "_content/SYSMCLTD.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
