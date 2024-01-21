@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SYSMCLTD.API.Data;
+using SYSMCLTD.API.Models;
 
 namespace SYSMCLTD.API.Controllers
 {
@@ -10,65 +11,86 @@ namespace SYSMCLTD.API.Controllers
     {
         private readonly SYSMCDBContext _sysdbcontext;
 
+        private  CustomerModel _customer = new CustomerModel();
+
+
         public CustomerController(SYSMCDBContext sysdbcontext)
         {
-            this._sysdbcontext = sysdbcontext;
+            _sysdbcontext = sysdbcontext;
+        }
+        public CustomerController(CustomerModel customerr)
+        {
+            _customer = customerr;
         }
 
         //Get All
         [HttpGet]
         public async Task<IActionResult> GetAllCustomers()
         {
-            var customer = await _sysdbcontext.customer.ToListAsync(c=>c.);
+            var customer =( await _sysdbcontext.customer.ToListAsync()).Where(x=>x.IsDeleted==false);
             return Ok(customer);
         }
-        ////שליפת משימה לפי ID
+        ////שליפת לקוח ונתוניו לפי ID
         //[HttpGet]
         //[Route("{id:guid}")]
-        //[ActionName("GetTask")]
-        //public async Task<IActionResult> GetTask([FromRoute] Guid id)
+        //[ActionName("GetCustomer")]
+        //public async Task<IActionResult> GetCustomer([FromRoute] Guid id)
         //{
-        //    var _task = await dtask.task_vm.FirstOrDefaultAsync(x => x.Id == id);
-        //    if (_task != null)
+        //    var customer = (await _sysdbcontext.customer.ToListAsync(x => x.Id == id)).Where(x => x.IsDeleted == false);
+        //    if (customer != null)
         //    {
-        //        return Ok(_task);
+        //        return Ok(customer);
         //    }
-        //    return NotFound("Task Not Found");
+        //    return NotFound("Customer Not Found");
         //}
 
 
-        ////Add Task--הוספת משימה
-        //[HttpPost]
+        //Add Task--  הוספת לקוח
+        [HttpPost]
 
-        //public async Task<IActionResult> AddTask([FromBody] TaskModel task_m)
-        //{
-        //    task_m.Id = Guid.NewGuid();
-        //    await dtask.task_vm.AddAsync(task_m);
-        //    await dtask.SaveChangesAsync();
-        //    return CreatedAtAction(nameof(GetTask), new { id = task_m.Id }, task_m);
-        //}
-        ////עדכון משימה
-        //[HttpPut]
-        //[Route("{id:guid}")]
+        public async Task<IActionResult> AddCustomer([FromBody] CustomerModel _customer)
+        {
 
-        //public async Task<IActionResult> UpdateTask([FromRoute] Guid id, [FromBody] TaskModel task_m)
-        //{
-        //    var update_task = await dtask.task_vm.FirstOrDefaultAsync(x => x.Id == id);
-        //    if (update_task != null)
-        //    {
-        //        update_task.Type = task_m.Type;
-        //        update_task.Name = task_m.Name;
-        //        update_task.Description = task_m.Description;
-        //        update_task.StartDate = task_m.StartDate;
-        //        update_task.EndDate = task_m.EndDate;
-        //        update_task.BackTask = task_m.BackTask;
-        //        update_task.Finish = task_m.Finish;
-        //        update_task.IsActive = task_m.IsActive;
-        //        await dtask.SaveChangesAsync();
-        //        return Ok(update_task);
-        //    }
-        //    return NotFound("Task Not Found");
+            var c = await _sysdbcontext.customer.AddAsync(_customer);
+            
+            await _sysdbcontext.SaveChangesAsync();
 
-        //}
+            return Ok(c);
+        }
+        //עדכון לקוח 
+        [HttpPut]
+        [Route("{id:guid}")]
+
+        public async Task<IActionResult> UpdateCustomer([FromRoute] Guid id, [FromBody] Customer _customer)
+        {
+            var _update = await _sysdbcontext.customer.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+            if (_update != null)
+            {
+                _update.FullName = _customer.FullName;
+                _update.IdNum = _customer.IdNum;
+                _update.IsDeleted = _customer.IsDeleted;
+                _update.Created = _customer.Created;
+                await _sysdbcontext.SaveChangesAsync();
+                return Ok(_update);
+            }
+            return NotFound("Customer Not Found");
+
+        }
+        //מחיקת לקוח 
+        [HttpPut]
+        [Route("{id:guid}")]
+
+        public async Task<IActionResult> DeleteCustomer([FromRoute] Guid id)
+        {
+            var _update = await _sysdbcontext.customer.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
+            if (_update != null)
+            {
+                _update.IsDeleted = true;
+                await _sysdbcontext.SaveChangesAsync();
+                return Ok();
+            }
+            return NotFound("Customer Not Found");
+
+        }
     }
 }

@@ -17,5 +17,9 @@ namespace SYSMCLTD.API.Models
         public bool? IsDeleted { get; set; }
 
         public DateTime? Created { get; set; }
+
+        public virtual ICollection<Customer> Customer { get; set; }
+
+
     }
 }

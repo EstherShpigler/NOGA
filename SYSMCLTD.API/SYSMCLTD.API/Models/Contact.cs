@@ -9,7 +9,7 @@ namespace SYSMCLTD.API.Models
 
         public Guid? Id { get; set; }
 
-        public string? FullName { get; set; }
+        public string? FullNameContact { get; set; }
         public int? OfficeNumber { get; set; }
 
         public string? Email { get; set; }
@@ -19,5 +19,7 @@ namespace SYSMCLTD.API.Models
         public int? CustomerId { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? Created { get; set; }
+
+        public virtual ICollection<Customer> Customer { get; set; }
     }
 }

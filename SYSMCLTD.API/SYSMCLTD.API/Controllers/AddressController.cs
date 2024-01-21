@@ -1,15 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SYSMCLTD.API.Data;
 
 namespace SYSMCLTD.API.Controllers
 {
-
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/api/[controller]")]
     public class AddressController : Controller
     {
-        public IActionResult Index()
+        private readonly SYSMCDBContext _sysdbcontext;
+
+
+
+        public AddressController(SYSMCDBContext sysdbcontext)
         {
-            return View();
+            _sysdbcontext = sysdbcontext;
         }
+
     }
 }
