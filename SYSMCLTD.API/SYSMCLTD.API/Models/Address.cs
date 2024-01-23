@@ -9,7 +9,7 @@ namespace SYSMCLTD.API.Models
 
         public Guid? Id { get; set; }
 
-        [ForeignKey("Customer")]
+        //[ForeignKey("Customer")]
 
         public Guid? CustomerId { get; set; }
         public string? City { get; set; }
@@ -18,7 +18,6 @@ namespace SYSMCLTD.API.Models
 
         public DateTime? Created { get; set; }
 
-        public virtual ICollection<Customer> Customer { get; set; }
 
 
     }

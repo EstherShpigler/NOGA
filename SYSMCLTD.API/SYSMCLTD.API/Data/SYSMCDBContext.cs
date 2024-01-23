@@ -9,10 +9,10 @@ namespace SYSMCLTD.API.Data
         public SYSMCDBContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<CustomerModel> customer { get; set; }
-        public DbSet<ContactModel> contact { get; set; }
+        public DbSet<Customer> customer { get; set; }
+        public DbSet<Contact> contact { get; set; }
 
-        public DbSet<AddressModel> address { get; set; }
+        public DbSet<Address> address { get; set; }
 
 
 

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SYSMCLTD.API.Models
 {
@@ -16,7 +17,11 @@ namespace SYSMCLTD.API.Models
 
         public DateTime? Created { get; set; }
 
-        public virtual ICollection<Contact> Contact { get; set; }
+        [JsonIgnore]
+
+        public virtual ICollection<Contact> Customers { get; set; }
+
+        [JsonIgnore]
 
         public virtual ICollection<Address> Address { get; set; }
 

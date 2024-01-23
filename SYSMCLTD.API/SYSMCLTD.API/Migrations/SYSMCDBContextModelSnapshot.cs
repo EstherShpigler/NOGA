@@ -45,6 +45,8 @@ namespace SYSMCLTD.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
                     b.ToTable("address");
                 });
 
@@ -57,13 +59,13 @@ namespace SYSMCLTD.API.Migrations
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FullNameContact")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsDeleted")
@@ -73,6 +75,8 @@ namespace SYSMCLTD.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("contact");
                 });
@@ -98,6 +102,27 @@ namespace SYSMCLTD.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("customer");
+                });
+
+            modelBuilder.Entity("SYSMCLTD.API.Models.Address", b =>
+                {
+                    b.HasOne("SYSMCLTD.API.Models.Customer", null)
+                        .WithMany("Address")
+                        .HasForeignKey("CustomerId");
+                });
+
+            modelBuilder.Entity("SYSMCLTD.API.Models.Contact", b =>
+                {
+                    b.HasOne("SYSMCLTD.API.Models.Customer", null)
+                        .WithMany("Customers")
+                        .HasForeignKey("CustomerId");
+                });
+
+            modelBuilder.Entity("SYSMCLTD.API.Models.Customer", b =>
+                {
+                    b.Navigation("Address");
+
+                    b.Navigation("Customers");
                 });
 #pragma warning restore 612, 618
         }
